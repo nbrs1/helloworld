@@ -1,1 +1,2 @@
-ptin("hello")
+print("hello")
+print("world")
