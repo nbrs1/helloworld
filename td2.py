@@ -9,7 +9,7 @@ class berlin
         self.autonomy=autonomy
         self.marque=marque
         self.automaticité=automaticité
-    def deplacement(self,ville1,ville2):
+    def trajet_possible(self,ville1,ville2):
         if ((ville1[0]-ville2[0])**2+(ville[1]-ville[2])**2)**(1/2)<self.autonomy:
             return true
         else:
@@ -26,7 +26,7 @@ class quatrequatre
         self.puissance=puissance
     def sensationenmontagne(self):
         return self.confort*self.puissance
-    def deplacement(self,ville1,ville2):
+    def trajet_possible(self,ville1,ville2):
         if ((ville1[0]-ville2[0])**2+(ville[1]-ville[2])**2)**(1/2)<self.autonomy:
             return true
         else:
