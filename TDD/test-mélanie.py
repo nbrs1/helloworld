@@ -18,7 +18,7 @@ class Test(unittest.TestCase):
 				rtest=True
 			self.assertEqual(result,rtest)
 		
-		assert(trajet_possible(voiture,ville1,ville2))
+		
 	def test_autonomy_sign(self):
 		assert(voiture.autonomy>0)
 	def test_confort_minimal(self):
