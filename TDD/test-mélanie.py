@@ -2,8 +2,6 @@ from tp2 import berlin
 import unittest
 
 
-ville1=[0,1]
-ville2=[0,2]
 
 
 class Test(unittest.TestCase):
