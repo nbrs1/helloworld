@@ -6,6 +6,7 @@ from scipy.stats import pearsonr
 from sklearn.metrics import mean_squared_error
 import matplotlib.pyplot as plt
 import random as rd 
+from math import sqrt
 
 DE = pd.read_csv("DE.csv", sep=";")
 DE.columns=['Date','LDZ','actual','normal']
@@ -97,7 +98,7 @@ def get_fit_metrics(h_hat, real_conso):
         #moyenne sigmoid
         avh=0
         for i in range(len(h_hat)):
-            avr+=h_hat[i]/len(h_hat)
+            avh+=h_hat[i]/len(h_hat)
         shr=0
         for i in range(len(h_hat)):
             shr+=(h_hat[i]-avh)*(real_conso[i]-avr)
@@ -105,18 +106,18 @@ def get_fit_metrics(h_hat, real_conso):
         s2=0
         for i in range(len(h_hat)):
             s2+=(h_hat[i]-avh)**2
-        #sh=s2**(1/2)
+        sh=sqrt(s2)
         s3=0
         for i in range(len(h_hat)):
             s3+=(real_conso[i]-avr)**2
-        #sr=s3**(1/2)
+        sr=sqrt(s3)
 
          #self.__corr, self.__rmse, self.__nrmse, self.__anrmse 
-        corr=shr**2/(s2*s3)
-        rmse=s**(1/2)
+        corr=shr/(sh*sr)
+        rmse=sqrt(s)
         nrmse=rmse/avr
         anrmse=abs(nrmse)
-        return [corr**(1/2),rmse,nrmse,anrmse]
+        return [corr,rmse,nrmse,anrmse]
 
 #The following class is the cosumption class it takes sigmoid parameters as well as a temperature as input
 class consumption:
