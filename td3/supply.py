@@ -11,17 +11,19 @@ from sklearn.datasets import make_classification
 from matplotlib import pyplot as plt
 from sklearn.linear_model import LogisticRegression
 import seaborn as sns
-
+import seaborn as seabornInstance
 from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn import metrics
 from sklearn.metrics import confusion_matrix
 from scipy.special import expit
 sns.set()
 
 
-
+#part 0: mise en place du modèle
 #premiere etape: creer le dictionnaire a partir du xlsx
 
-<<<<<<< HEAD
+
 storage_data=pd.read_excel("storage_datarealone.xlsx",sheet_name=None)
 
 
@@ -41,7 +43,7 @@ for key in storage_data:
 #3e étape : Calculate a lagged net withdrawal column of day prior
 for key in storage_data:
 	l1=storage_data[key]["NW"].values
-	l2=[0]
+	l2=[0]  #le jour le premier jour  on sait pas donc on met 0
 	for i in range(len(l1)-1):
 		l2.append(l1[i])
 	storage_data[key]["lagged_NW"]=pd.DataFrame(l2)
@@ -89,36 +91,50 @@ for key in storage_data:
 #Your y array is the Net Withdrawal_binary column
 #Your X matrix is composed of the Lagged_NW, FSW1, FSW2 and all the time spreads price columns
 
-X=price_data
-del X['gasDayStartedon']
+# X=price_data
+# del X['gasDayStartedon']
 
-for key in storage_data:
-	y=np.array(storage_data[key]["Net Withdrawal_binary"].values)
+# for key in storage_data:
+# 	y=np.array(storage_data[key]["Net Withdrawal_binary"].values)
 	
-	X["lagged_NW"]=storage_data[key]["lagged_NW"]
-	X["FSW1"]=storage_data[key]["FSW1"]
-	X["FSW2"]=storage_data[key]["FSW2"]
-	for c in X:
-		x_train, x_test, y_train, y_test = train_test_split(c, y, random_state=1)
-		lr = LogisticRegression()
-		lr.fit(x_train, y_train)
-		y_pred = lr.predict(x_test)
-		cm=confusion_matrix(y_test, y_pred)
-		proba=lr.predict_proba(x_test)
-		df = pd.DataFrame({'x': x_test[:,0], 'y': y_test})
-		df = df.sort_values(by='x')
+# 	X["lagged_NW"]=storage_data[key]["lagged_NW"]
+# 	X["FSW1"]=storage_data[key]["FSW1"]
+# 	X["FSW2"]=storage_data[key]["FSW2"]
+# 	for c in X:
+# 		x_train, x_test, y_train, y_test = train_test_split(c, y, random_state=1)
+# 		lr = LogisticRegression()
+# 		lr.fit(x_train, y_train)
+# 		y_pred = lr.predict(x_test)
+# 		cm=confusion_matrix(y_test, y_pred)
+# 		proba=lr.predict_proba(x_test)
+# 		df = pd.DataFrame({'x': x_test[:,0], 'y': y_test})
+# 		df = df.sort_values(by='x')
 		
-		sigmoid_function = expit(df['x'] * lr.coef_[0][0] + lr.intercept_[0]).ravel()
-		plt.plot(df['x'], sigmoid_function)
-		plt.scatter(df['x'], df['y'], c=df['y'], cmap='rainbow', edgecolors='b')
-		plt.show()
-=======
-storage_data=pd.read_excel("storage_data(1).xlsx",sheet_name=None)
+# 		sigmoid_function = expit(df['x'] * lr.coef_[0][0] + lr.intercept_[0]).ravel()
+# 		plt.plot(df['x'], sigmoid_function)
+# 		plt.scatter(df['x'], df['y'], c=df['y'], cmap='rainbow', edgecolors='b')
+# 		plt.show()
 
-print(storage_data['SF -UGS Rehden'])
+# storage_data=pd.read_excel("storage_data(1).xlsx",sheet_name=None)
+
+# print(storage_data['SF -UGS Rehden'])
 
 #for cle in storage_data() :		#parcours du dictionnaire
 	#storage_data[cle]["Lagged-NW"]=storage_data[cle]['withdrawal']-storage_data[cle]['injection']
 	
 #print(storage_data)
->>>>>>> 8f8ea95829ea74f0d8d0531991d5c61eec6b03d3
+#>>>>>>> 8f8ea95829ea74f0d8d0531991d5c61eec6b03d3
+
+
+#part 2 : Regression
+
+rmodel={}
+
+
+#multidimensionnal regression
+
+print(storage_data["SF - UGS Peckensen"].describe())
+
+
+
+
