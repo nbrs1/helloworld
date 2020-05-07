@@ -11,10 +11,11 @@ from sklearn.datasets import make_classification
 from matplotlib import pyplot as plt
 from sklearn.linear_model import LogisticRegression
 import seaborn as sns
-sns.set()
+
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
-
+from scipy.special import expit
+sns.set()
 
 
 
@@ -105,7 +106,7 @@ for key in storage_data:
 		proba=lr.predict_proba(x_test)
 		df = pd.DataFrame({'x': x_test[:,0], 'y': y_test})
 		df = df.sort_values(by='x')
-		from scipy.special import expit
+		
 		sigmoid_function = expit(df['x'] * lr.coef_[0][0] + lr.intercept_[0]).ravel()
 		plt.plot(df['x'], sigmoid_function)
 		plt.scatter(df['x'], df['y'], c=df['y'], cmap='rainbow', edgecolors='b')
