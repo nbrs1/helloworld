@@ -21,6 +21,7 @@ sns.set()
 
 #premiere etape: creer le dictionnaire a partir du xlsx
 
+<<<<<<< HEAD
 storage_data=pd.read_excel("storage_datarealone.xlsx",sheet_name=None)
 
 
@@ -111,3 +112,13 @@ for key in storage_data:
 		plt.plot(df['x'], sigmoid_function)
 		plt.scatter(df['x'], df['y'], c=df['y'], cmap='rainbow', edgecolors='b')
 		plt.show()
+=======
+storage_data=pd.read_excel("storage_data(1).xlsx",sheet_name=None)
+
+print(storage_data['SF -UGS Rehden'])
+
+#for cle in storage_data() :		#parcours du dictionnaire
+	#storage_data[cle]["Lagged-NW"]=storage_data[cle]['withdrawal']-storage_data[cle]['injection']
+	
+#print(storage_data)
+>>>>>>> 8f8ea95829ea74f0d8d0531991d5c61eec6b03d3
