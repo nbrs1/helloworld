@@ -16,12 +16,11 @@ import datetime
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix
 from scipy.special import expit
-
+from sklearn import preprocessing
 sns.set()
 #premiere etape: creer le dictionnaire a partir du xlsx
 storage_data=pd.read_excel("storage_datarealone.xlsx",sheet_name=None)
 
-print(storage_data["SF - UGS Peckensen"].columns)
 
 #2e étape : Calculate a net withdrawal column
 for key in storage_data:
@@ -69,15 +68,43 @@ random_forest={}
 
 #inner join : on a besoin de lier les 2 fichiers csv pour que les infos et dates coincident
 #mettre même format les dates:
-price_data["gasDayStartedOn"]=pd.to_datetime(price_data["gasDayStartedOn"],format='%Y%m%d', errors='coerce')
+
+price_data["gasDayStartedOn"]=pd.to_datetime(price_data["gasDayStartedOn"])
 #storage_data[key]["SF - UGS Peckensen"]=pd.to_datetime(storage_data["SF - UGS Peckensen"]["gasDayStartedOn"], format='%Y%m%d', errors='ignore')
 # print(storage_data["SF - UGS Peckensen"]["gasDayStartedOn"])
 #print(price_dzata["gasDayStartedOn"])
 data={} #nouveau dictionnaire plus pratique à utiliser
-
 for key in storage_data:
-	data[key]=pd.merge(storage_data[key],price_data, on="gasDayStartedOn")
-print(data["SF - UGS Peckensen"])
+	data[key]=storage_data[key].merge(price_data, left_on="gasDayStartedOn", right_on="gasDayStartedOn")
+
+key="SF - UGS Peckensen"
+storage_data[key]=storage_data[key].merge(price_data, left_on="gasDayStartedOn", right_on="gasDayStartedOn")
+# logistic regression
+#X matrix is composed of the Lagged_NW, FSW1, FSW2 and all the time spreads price columns 
+y=np.array(storage_data[key]["Net Withdrawal_binary"].values)
+x=np.array([storage_data[key]["gasDayStartedOn"].values,storage_data[key]["lagged_NW"].values,storage_data[key]["FSW1"].values,storage_data[key]["FSW2"].values,storage_data[key]["SAS_GPL"].values,storage_data[key]["SAS_TTF"].values,storage_data[key]["SAS_NCG"].values,storage_data[key]["SAS_NBP"].values])
+x=x.transpose()
+x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=1)
+lr = LogisticRegression()
+
+for i in range(len(x_train)):
+	for j in range(len(x_train[0])):
+		if np.isnan(x_train[i][j])==True:
+			x_train[i][j]=0
+x_train=preprocessing.scale(x_train)
+
+Logi=lr.fit(x_train, y_train)
+y_pred = lr.predict(x_test)
+print(Logi)
+cm=confusion_matrix(y_test, y_pred)
+#print(cm)
+#proba=lr.predict_proba(x_test)
+#Logistic_Regression[key]={"recall": metrics.recall_score(y_test, y_pred), "neg_recall": cm[1,1]/(cm[0,1] + cm[1,1]), "confusion": cm,"precision": metrics.precision_score(y_test, y_pred),"neg_precision":cm[1,1]/cm.sum(axis=1)[1],"roc": metrics.roc_auc_score(y_test, proba),"class_mod": Logi}
+#print(Logistic_Regression[key])		
+
+
+
+
 
 
 # logistic regression
