@@ -69,7 +69,7 @@ random_forest={}
 
 #inner join : on a besoin de lier les 2 fichiers csv pour que les infos et dates coincident
 #mettre même format les dates:
-price_data["gasDayStartedOn"]=pd.to_datetime(price_data["gasDayStartedOn"],format='%Y%m%d', errors='coerce')
+#price_data["gasDayStartedOn"]=pd.to_datetime(price_data["gasDayStartedOn"],format='%Y%m%d', errors='coerce')
 #storage_data[key]["SF - UGS Peckensen"]=pd.to_datetime(storage_data["SF - UGS Peckensen"]["gasDayStartedOn"], format='%Y%m%d', errors='ignore')
 # print(storage_data["SF - UGS Peckensen"]["gasDayStartedOn"])
 #print(price_dzata["gasDayStartedOn"])
@@ -77,6 +77,7 @@ data={} #nouveau dictionnaire plus pratique à utiliser
 
 for key in storage_data:
 	data[key]=pd.merge(storage_data[key],price_data, on="gasDayStartedOn")
+
 print(data["SF - UGS Peckensen"])
 
 
