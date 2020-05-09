@@ -80,30 +80,57 @@ for key in storage_data:
 
 #je ne comprends pas ces 2 lignes ??
 key="SF - UGS Peckensen"
-storage_data[key]=storage_data[key].merge(price_data, left_on="gasDayStartedOn", right_on="gasDayStartedOn")
+# storage_data[key]=storage_data[key].merge(price_data, left_on="gasDayStartedOn", right_on="gasDayStartedOn")
 
-# logistic regression
-#X matrix is composed of the Lagged_NW, FSW1, FSW2 and all the time spreads price columns 
-y=np.array(storage_data[key]["Net Withdrawal_binary"].values)
-x=np.array([storage_data[key]["gasDayStartedOn"].values,storage_data[key]["lagged_NW"].values,storage_data[key]["FSW1"].values,storage_data[key]["FSW2"].values,storage_data[key]["SAS_GPL"].values,storage_data[key]["SAS_TTF"].values,storage_data[key]["SAS_NCG"].values,storage_data[key]["SAS_NBP"].values])
-x=x.transpose()
-x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=1)
-lr = LogisticRegression()
+# # logistic regression
+# #X matrix is composed of the Lagged_NW, FSW1, FSW2 and all the time spreads price columns 
+# y=np.array(storage_data[key]["Net Withdrawal_binary"].values)
+# x=np.array([storage_data[key]["gasDayStartedOn"].values,storage_data[key]["lagged_NW"].values,storage_data[key]["FSW1"].values,storage_data[key]["FSW2"].values,storage_data[key]["SAS_GPL"].values,storage_data[key]["SAS_TTF"].values,storage_data[key]["SAS_NCG"].values,storage_data[key]["SAS_NBP"].values])
+# x=x.transpose()
+# x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=1)
+# lr = LogisticRegression()
 
-for i in range(len(x_train)):
-	for j in range(len(x_train[0])):
-		if np.isnan(x_train[i][j])==True:
-			x_train[i][j]=0
-x_train=preprocessing.scale(x_train)
+# for i in range(len(x_train)):
+# 	for j in range(len(x_train[0])):
+# 		if np.isnan(x_train[i][j])==True:
+# 			x_train[i][j]=0
+# x_train=preprocessing.scale(x_train)
 
-Logi=lr.fit(x_train, y_train)
-y_pred = lr.predict(x_test)
-print(Logi)
-cm=confusion_matrix(y_test, y_pred)
-#print(cm)
+# Logi=lr.fit(x_train, y_train)
+# y_pred = lr.predict(x_test)
+# print(Logi)
+# cm=confusion_matrix(y_test, y_pred)
+# #print(cm)
 #proba=lr.predict_proba(x_test)
 #Logistic_Regression[key]={"recall": metrics.recall_score(y_test, y_pred), "neg_recall": cm[1,1]/(cm[0,1] + cm[1,1]), "confusion": cm,"precision": metrics.precision_score(y_test, y_pred),"neg_precision":cm[1,1]/cm.sum(axis=1)[1],"roc": metrics.roc_auc_score(y_test, proba),"class_mod": Logi}
 #print(Logistic_Regression[key])		
+
+
+
+#Part 2:
+#dictionnaire contenant les metriques
+regression_model={}
+
+#on travaille sur un nouveau dictionnaire "data2" pour lequel NW_binary=1
+data2=data
+for key in data:
+	for i in range (len(data[key]["Net Withdrawal_binary"])):	#longueur d'une colonne
+		if (data[key]["Net Withdrawal_binary"].values[i]==0):
+			data2[key]["Net Withdrawal_binary"].drop(i,0,inplace=True)
+
+
+
+
+
+
+y1=np.array(data[key]["NW"].values)
+x1=np.array([data[key]["gasDayStartedOn"].values,data[key]["lagged_NW"].values,data[key]["FSW1"].values,data[key]["FSW2"].values,data[key]["SAS_GPL"].values,data[key]["SAS_TTF"].values,data[key]["SAS_NCG"].values,data[key]["SAS_NBP"].values])
+
+
+# print(data[['SF -UGS Rehden']]["Net Withdrawal_binary"])
+
+
+# regression_model= {'r2': metrics.r2_score(y_test, y_pred), 'rmse': rmse, 'nrmse': nrmse, 'anrmse': anrmse, 'cor': corr, 'l_reg': the regression}
 
 
 
@@ -130,4 +157,3 @@ cm=confusion_matrix(y_test, y_pred)
 
 #print(storage_data['SF -UGS Rehden'])
 
-#Part 2:
