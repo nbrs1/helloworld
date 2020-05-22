@@ -70,15 +70,18 @@ random_forest={}
 #mettre même format les dates:
 
 price_data["gasDayStartedOn"]=pd.to_datetime(price_data["gasDayStartedOn"])
-#storage_data[key]["SF - UGS Peckensen"]=pd.to_datetime(storage_data["SF - UGS Peckensen"]["gasDayStartedOn"], format='%Y%m%d', errors='ignore')
-# print(storage_data["SF - UGS Peckensen"]["gasDayStartedOn"])
-#print(price_dzata["gasDayStartedOn"])
+#print(price_data["gasDayStartedOn"])
+
+
 data={} #nouveau dictionnaire plus pratique à utiliser
 for key in storage_data:
 	data[key]=storage_data[key].merge(price_data, left_on="gasDayStartedOn", right_on="gasDayStartedOn")
 
+
+#je ne comprends pas ces 2 lignes ??
 key="SF - UGS Peckensen"
 storage_data[key]=storage_data[key].merge(price_data, left_on="gasDayStartedOn", right_on="gasDayStartedOn")
+
 # logistic regression
 #X matrix is composed of the Lagged_NW, FSW1, FSW2 and all the time spreads price columns 
 y=np.array(storage_data[key]["Net Withdrawal_binary"].values)
@@ -126,3 +129,5 @@ cm=confusion_matrix(y_test, y_pred)
 #storage_data=pd.read_excel("storage_data(1).xlsx",sheet_name=None)
 
 #print(storage_data['SF -UGS Rehden'])
+
+#Part 2:
