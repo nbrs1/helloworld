@@ -243,7 +243,7 @@ if __name__ == '__main__':
     sig = optimize_sigmoid(conso)
     print(sig)
     coef = sig.optimize()
-    c = sig.create_consumption()
+    
     print(sig)
 
 
